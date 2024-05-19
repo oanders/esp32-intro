@@ -3,27 +3,28 @@
 #define PIN_LED  2
 #define PIN_BUTTON 13
 
-void reverseGPIO(int pin){
-  digitalWrite(pin, !digitalRead(pin));
-}
+byte ledPins[] = {15, 2, 0, 4, 5, 18, 19, 21, 22, 23};
+int ledCounts;
+
 
 void setup() {
-  pinMode(PIN_LED, OUTPUT);
-  pinMode(PIN_BUTTON, INPUT);
-  Serial.begin(921600);
-  Serial.println("Hello from the setup");
+  ledCounts = sizeof(ledPins);
+  for (int i = 0; i < ledCounts; i++){
+    pinMode(ledPins[i], OUTPUT);
+  }
 }
 
 void loop() {
-  if(digitalRead(PIN_BUTTON) == LOW){
-    delay(20);
-    if(digitalRead(PIN_BUTTON) == LOW){
-      reverseGPIO(PIN_LED);
-    }
-    while(digitalRead(PIN_BUTTON) == LOW){
-      delay(20);
-    }
-  } 
+  for (int i = 0; i < ledCounts; i++){
+    digitalWrite(ledPins[i], HIGH);
+    delay(100);
+    digitalWrite(ledPins[i], LOW);
+  }
+  for (int i = ledCounts -1; i > -1; i--){
+    digitalWrite(ledPins[i], HIGH);
+    delay(100);
+    digitalWrite(ledPins[i], LOW);
+  }
 }
 
 
